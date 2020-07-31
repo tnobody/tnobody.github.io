@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+    <!-- capture the CSS content as a Nunjucks variable -->
+    {% set css %}
+    {% include "styles/index.css" %}
+    {% endset %}
+    <!-- feed it through our cssmin filter to minify -->
+    <style>
+      {{css | cssmin | safe}}
+    </style>
+  </head>
+  <body class="bg-gray-900">
+    <main class="container mx-auto">
+      <article class="prose ">
+        {{ content | safe }}
+      </article>
+    </main>
+
+  </body>
+</html>
