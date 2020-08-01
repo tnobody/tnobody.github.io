@@ -36,6 +36,7 @@ The snippet above shows how to register the filter with the name 'postcss' - con
 
 Before you are going to implement the actual body of the filter you should integrate the css to your template in order get better understanding what happens when the filter is invoked. I added the following snippet into the default layout `content/_includes/layouts/index.njk`:
 
+{% raw %}
 ```html
   <head>
     <!-- capture the CSS content as a Nunjucks variable -->
@@ -48,6 +49,7 @@ Before you are going to implement the actual body of the filter you should integ
     </style>
   </head>
 ``` 
+{% endraw %}
 
 This technique includes two steps in the 11ty build pipeline:
  
