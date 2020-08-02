@@ -15,5 +15,9 @@
   @apply text-green-600;
 }
 
+.prose a {
+  @apply underline text-green-500;
+}
+
 
 @tailwind utilities;
