@@ -4,16 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{title}}</title>
-    <!-- capture the CSS content as a Nunjucks variable -->
-    {% set css %}
-    {% include "styles/index.css" %}
-    {% endset %}
-    <!-- feed it through our cssmin filter to minify -->
-    <style>
-      {{css | postcss | safe}}
-    </style>
+    {% if criticalCSS %}
+      <!-- capture the CSS content as a Nunjucks variable -->
+      {% set css %}
+      {% include "styles/index.css" %}
+      {% endset %}
+      <!-- feed it through our cssmin filter to minify -->
+      <style>
+        {{css | postcss | safe}}
+      </style>
+    {% else %}
+      <link rel="stylesheet" src="theme.css" />
+    {% endif %}
   </head>
-  <body class="bg-gray-900">
+  <body class="bg-gray-900 w-full h-full">
     <main class="container mx-auto">
       <article class="prose ">
         {{ content | safe }}
