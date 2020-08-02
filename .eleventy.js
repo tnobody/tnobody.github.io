@@ -16,4 +16,9 @@ module.exports = function (eleventyConfig) {
       ]).process(cssCode)
       .then(r => done(null, r.css), e => done(e, null))
   })
+  
+  eleventyConfig
+    .addCollection("posts", 
+      collectionApi => collectionApi.getFilteredByGlob("blog/**/*.md")
+    )
 };

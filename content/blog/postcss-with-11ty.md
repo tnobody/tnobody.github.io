@@ -1,5 +1,6 @@
 ---
 title: Using PostCss and Tailwindcss in 11ty
+layout: default
 ---
 
 # {{ title }}

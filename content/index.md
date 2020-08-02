@@ -1,6 +1,11 @@
 ---
+layout: base
 ---
 
-# TNobody
-
-This is my blog :)
+<ul>
+{%- for post in collections.posts -%}
+    <li>
+        {{ post.data.title }}
+    </li>
+{%- endfor -%}
+</ul>
