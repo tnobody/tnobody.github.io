@@ -6,7 +6,7 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addWatchTarget("styles/**/*.css");
 
   eleventyConfig.addLayoutAlias('default', 'layouts/index.njk');
-  eleventyConfig.addNunjucksAsyncFilter('cssmin', (cssCode, done) => {
+  eleventyConfig.addNunjucksAsyncFilter('postcss', (cssCode, done) => {
     postCss([
         tailwind({
           plugins: [
