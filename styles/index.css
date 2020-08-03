@@ -3,7 +3,8 @@
 @tailwind components;
 
 html,
-.prose {
+.prose,
+.prose blockquote {
   @apply text-gray-100;
 }
 
