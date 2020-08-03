@@ -22,14 +22,20 @@
     <header>
       <div class="container mx-auto flex flex-row justify-between items-center p-4">
         <div class="font-bold font-mono text-xl">
-          <a href="/">
-            <span class="text-green-600">T</span>Nobody.io
+          <a href="/" class="font-mono font-bold">
+            {<span class="text-gray-100">
+              N<span class="hidden sm:inline">obody</span>.c<span class="hidden sm:inline">odes</span>.P<span class="hidden sm:inline">erfect</span>
+            </span>}
           </a>
         </div>
         <nav >
           <ul class="flex flex-row space-x-4">
-            <li><a href="">Blog</a></li>
-            <li><a href="/about">About</a></li>
+            <li>
+              <a href="">Blog</a>
+            </li>
+            <li>
+              <a href="/about">About</a>
+            </li>
           </ul>
         </nav>
       </div>
@@ -37,8 +43,21 @@
     <main class="container mx-auto py-4 flex-1">
       {{ content | safe }}
     </main>
-    <footer class="p-4 flex items-center justify-center">
-      Made with 💚 and&nbsp;<a href="https://11ty.dev">11ty</a>
+    <footer class="p-4 flex flex-col space-y-4 items-center justify-center">
+
+      <div class="flex items-center space-x-4 justify-center">
+        <a href="/imprint">
+          Imprint</a>
+        <a href="https://github.com/tnobody" title="Github page of tnobody" target="_blank" rel="noopener" class="w-4 h-4 inline-block">
+          {% include "content/icons/github.svg" %}
+        </a>
+        <a href="https://twitter.com/derKeiner" title="Twitter profile of @derKeiner" target="_blank" rel="noopener" class="w-4 h-4 inline-block">
+          {% include "content/icons/twitter.svg" %}
+        </a>
+      </div>
+      <div class="text-sm">
+        Made with 💚 and&nbsp;<a target="_blank" rel="noopener" href="https://11ty.dev">11ty</a>
+      </div>
     </footer>
   </body>
 </html>

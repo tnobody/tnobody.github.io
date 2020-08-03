@@ -5,7 +5,7 @@ layout: post
 
 # {{ title }}
 
-One of the first things I check on every new technology, that I checked out recently is the support for PostCSS integration. TBH I'm not a big fan of PostCSS at all but TailwindCss works best with a PostCSS setup. So I investigated some minutes before I started to setup my blog with 11ty to find out, how PostCSS integration is possible and the result was surprisingly simple and it took me about ~30min of research and implementation.
+One of the first things I check on every new technology, that I checked out recently is the support for PostCSS integration. TBH I'm not a big fan of PostCSS at all but TailwindCss works best with a PostCSS setup. So I investigated some minutes before I started to setup my blog with 11ty to find out, how PostCSS integration is possible and the result was surprisingly simple and it took me about ~30 min of research and implementation.
 
 **TL;DR**: Checkout [`.eleventy.js`]() config file of this blog (It is really simple).
 
@@ -129,7 +129,7 @@ You might encounter that the changes in css doens't trigger a rebuild of 11ty. T
 
 The method registers a new glob which tells 11ty to watch for changes and rebuild when ever they happen.
 
-## Alternatives
+## Alternative / Extension
 
 The result of the presented approach is that all CSS is inlined within every document rather than loaded as external resource. TBH, it might not have a too big impact in a small blogging setup with a small amount of CSS like this blog in the moment (to have really small css, some more postcss plugins are required like purgecss and minifycss). But maybe your use-case is different or you're just curios.
 
@@ -147,3 +147,22 @@ Here is an incomplete +/- list for for inlined CSS:
 
 - CSS is send on every page request and can not be cached individually be the browser
 - Document size increases for every document
+
+The approach to create the inline CSS combined with the `permalink` configuration of 11ty makes it handy to implement a loadable css file. Just create a template file and roughly add the following contents:
+
+{% raw %}
+```md
+---
+permalink: theme.css
+---
+
+{% set css %}
+  {% include "styles/index.css" %}
+  {% include "styles/prism-theme.css" %}
+{% endset %}
+{{css | postcss | safe}}
+
+```
+{% endraw %}
+
+Now the css can be loaded as a file with: `<link rel="stylesheet" href="/theme.css" />`

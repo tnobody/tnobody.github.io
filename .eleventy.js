@@ -1,5 +1,6 @@
 const syntaxHighlight = require("@11ty/eleventy-plugin-syntaxhighlight");
 const postCss = require('postcss');
+const CleanCSS = require('clean-css');
 const tailwind = require('tailwindcss');
 const readingTime = require('eleventy-plugin-reading-time');
 
@@ -30,6 +31,7 @@ module.exports = function (eleventyConfig) {
 
   eleventyConfig.addWatchTarget("styles/**/*.css");
   eleventyConfig.addNunjucksAsyncFilter('postcss', (cssCode, done) => {
+    const cleanCss = new CleanCSS({})
     postCss([
         tailwind({
           purge: {
@@ -41,10 +43,21 @@ module.exports = function (eleventyConfig) {
           },
           plugins: [
             require('@tailwindcss/typography')
-          ]
-        })
+          ],
+          variants: {
+            typography: [],
+          },
+        }),
+
       ]).process(cssCode)
-      .then(r => done(null, r.css), e => done(e, null))
+      .then(r => {
+        const result = cleanCss.minify(r.css)
+        if (result.errors.length) {
+          done(result.errors, null)
+        } else {
+          done(null, result.styles)
+        }
+      })
   })
 
 
