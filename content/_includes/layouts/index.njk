@@ -14,15 +14,31 @@
         {{css | postcss | safe}}
       </style>
     {% else %}
-      <link rel="stylesheet" href="/theme.css" />
+      <link rel="stylesheet" href="/theme.css"/>
     {% endif %}
+    <style></style>
   </head>
-  <body class="bg-gray-900 w-full h-full">
-    <main class="container mx-auto">
-      <article class="prose ">
-        {{ content | safe }}
-      </article>
+  <body class="bg-gray-900 w-full h-full min-h-screen flex flex-col">
+    <header>
+      <div class="container mx-auto flex flex-row justify-between items-center p-4">
+        <div class="font-bold font-mono text-xl">
+          <a href="/">
+            <span class="text-green-600">T</span>Nobody.io
+          </a>
+        </div>
+        <nav >
+          <ul class="flex flex-row space-x-4">
+            <li><a href="">Blog</a></li>
+            <li><a href="/about">About</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <main class="container mx-auto py-4 flex-1">
+      {{ content | safe }}
     </main>
-
+    <footer class="p-4 flex items-center justify-center">
+      Made with 💚 and&nbsp;<a href="https://11ty.dev">11ty</a>
+    </footer>
   </body>
 </html>
