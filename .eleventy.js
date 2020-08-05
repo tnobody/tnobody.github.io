@@ -20,6 +20,12 @@ module.exports = function (eleventyConfig) {
       day: '2-digit'
     }).format(d)
   })
+  eleventyConfig.addFilter('markdown', function(value) {
+    let markdown = require('markdown-it')({
+        html: true
+    });
+    return markdown.render(value);
+});
   eleventyConfig
     .addCollection("posts",
       collectionApi => collectionApi.getFilteredByGlob("content/blog/**/*.md")
