@@ -4,6 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{title}}</title>
+    {% if paperCSS %}
+      {% set paper %}
+      {% include "node_modules/papercss/src/styles.scss" %}
+      {% endset %}
+      <style >
+        {{paper  | safe}}
+      </style>
+    {% endif %}
     {% if criticalCSS %}
       <!-- capture the CSS content as a Nunjucks variable -->
       {% set css %}
@@ -19,7 +27,7 @@
     <style></style>
   </head>
   <body class="bg-gray-900 w-full h-full min-h-screen flex flex-col">
-    <header>
+    <header class="elevated">
       <div class="container mx-auto flex flex-row justify-between items-center p-4">
         <div class="font-bold font-mono text-xl">
           <a href="/" class="font-mono font-bold">
@@ -43,7 +51,7 @@
     <main class="container mx-auto py-4 flex-1">
       {{ content | safe }}
     </main>
-    <footer class="p-4 flex flex-col space-y-4 items-center justify-center">
+    <footer class="elevated p-4 flex flex-col space-y-4 items-center justify-center">
 
       <div class="flex items-center space-x-4 justify-center">
         <a href="/imprint">

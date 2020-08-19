@@ -7,10 +7,10 @@ pagination:
   alias: posts
 ---
 
-<div class="space-y-4">
+<div class="space-y-4 px-4">
   {% for post in posts %}
-    <article class="prose mx-auto border-b pb-4 border-green-800">
-      <header class="text-sm text-green-900 py-4 flex justify-between font-serif">
+    <article class="prose mx-auto border-b pb-4 border-green-700">
+      <header class="text-sm text-green-700 py-4 flex justify-between font-serif">
         <span>About
           {{ post | readingTime }}
           reading time</span>

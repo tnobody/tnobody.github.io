@@ -2,6 +2,7 @@ const syntaxHighlight = require("@11ty/eleventy-plugin-syntaxhighlight");
 const postCss = require('postcss');
 const CleanCSS = require('clean-css');
 const tailwind = require('tailwindcss');
+const sass = require('sass')
 const readingTime = require('eleventy-plugin-reading-time');
 
 module.exports = function (eleventyConfig) {
@@ -20,12 +21,13 @@ module.exports = function (eleventyConfig) {
       day: '2-digit'
     }).format(d)
   })
-  eleventyConfig.addFilter('markdown', function(value) {
+  eleventyConfig.addFilter('markdown', function (value) {
     let markdown = require('markdown-it')({
-        html: true
+      html: true
     });
     return markdown.render(value);
-});
+  });
+
   eleventyConfig
     .addCollection("posts",
       collectionApi => collectionApi.getFilteredByGlob("content/blog/**/*.md")
@@ -36,6 +38,7 @@ module.exports = function (eleventyConfig) {
   // Asset configuration
 
   eleventyConfig.addWatchTarget("styles/**/*.css");
+
   eleventyConfig.addNunjucksAsyncFilter('postcss', (cssCode, done) => {
     const cleanCss = new CleanCSS({})
     postCss([
@@ -45,6 +48,7 @@ module.exports = function (eleventyConfig) {
             content: [
               './content/**/*.njk',
               './content/**/*.md',
+              './content/**/*.html',
             ],
           },
           plugins: [
