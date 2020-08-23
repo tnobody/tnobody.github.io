@@ -7,15 +7,18 @@ pagination:
   alias: posts
 ---
 
-<h1>Welcome to my Blog</h1>
-
-{% for post in posts %}
-  <article class="prose">
-    <h2>
-      <a href="{{ post.url | url }}">{{ post.data.title }}</a>
-    </h2>
-    <date>
-        {{ post.date }}
-    </date>
-  </article>
-{% endfor %}
+<div class="space-y-4">
+  {% for post in posts %}
+    <article class="prose mx-auto border-b pb-4 border-green-800">
+      <header class="text-sm text-green-900 py-4 flex justify-between font-serif">
+        <span>About
+          {{ post | readingTime }}
+          reading time</span>
+        <span class="">{{post.date | format }}</span>
+      </header>
+      <h1>
+        <a href="{{ post.url | url }}" class="no-underline">{{ post.data.title }}</a>
+      </h1>
+    </article>
+  {% endfor %}
+</div>
