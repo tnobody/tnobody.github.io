@@ -1,5 +1,6 @@
 ---
 title: Timeseries in Typescript
+layout: post
 ---
 
 # {{ title }}
