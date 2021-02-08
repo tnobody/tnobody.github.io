@@ -27,7 +27,8 @@ a {
   @apply underline;
 }
 
-body>header, footer {
+body > header,
+footer {
   @apply bg-green-800 bg-opacity-25 shadow;
 }
 

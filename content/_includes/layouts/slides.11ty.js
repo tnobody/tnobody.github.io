@@ -1,9 +1,11 @@
+const revealDataToAttributes = (data = {}) => Object.entries(data).map(([attr, val]) => `data-${attr}="${val}"`).join(" ")
+
 class Slides {
   data() {
     return {
       layout: 'html',
       "scripts": ["/app.js"],
-      styles: ['/reveal-css/reveal.css', '/reveal-css/theme/black.css']
+      styles: ['/reveal-css/reveal.css', '/reveal-css/theme/black.css', '//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/darcula.min.css']
     }
   }
 
@@ -16,7 +18,6 @@ class Slides {
       .filter(({
         url: slideUrl
       }) => {
-        console.log(slideUrl, page.url)
         return slideUrl.startsWith(page.url) && slideUrl !== page.url
       })
 
@@ -24,8 +25,8 @@ class Slides {
     return `
       <div class="reveal">
         <div class="slides">
-          ${slides.map((p) => (`
-            <section>${p.data.content}</section>
+          ${slides.map((p) =>(`
+            <section ${revealDataToAttributes(p.data.reveal)}>${p.data.content}</section>
           `)).join("")}
         </div>
       </div>
