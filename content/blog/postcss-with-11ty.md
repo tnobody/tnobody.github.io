@@ -1,6 +1,6 @@
 ---
 title: Using PostCss and Tailwindcss in 11ty
-layout: post
+
 ---
 
 # {{ title }}

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+    {% if criticalCSS %}
+      <!-- capture the CSS content as a Nunjucks variable -->
+      {% set css %}
+      {% include "styles/index.css" %}
+      {% endset %}
+      <!-- feed it through our cssmin filter to minify -->
+      <style>
+        {{css | postcss | safe}}
+      </style>
+    {% else %}
+      <link rel="stylesheet" href="/theme.css"/>
+    {% endif %}
+    {% for style in styles %}
+      <link rel="stylesheet" href="{{ style }}"/>
+    {% endfor %}
+  </head>
+  {{ content | safe }}
+  {% for script in scripts %}
+    <script src="{{script}}"></script>
+  {% endfor %}
+</html>
