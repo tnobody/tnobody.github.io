@@ -1,4 +1,4 @@
-## Adavantages over inline styles
+## Advantages over inline styles
 
 - Constraints for the Design System:
   - Sizing, Colors, Typography and other primitives
