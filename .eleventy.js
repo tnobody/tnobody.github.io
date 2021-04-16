@@ -21,6 +21,8 @@ const getOrderValue = (page) => {
 module.exports = function (eleventyConfig) {
 
   // Content configuration
+  eleventyConfig.addPassthroughCopy("images");
+
 
   eleventyConfig.addLayoutAlias('default', 'layouts/index.njk');
   eleventyConfig.addLayoutAlias('html', 'layouts/html.njk');
