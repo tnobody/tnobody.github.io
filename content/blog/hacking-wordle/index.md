@@ -1,3 +1,7 @@
+---
+title: Hacking Wordle
+---
+
 Do you recently see something like this on twitter:
 
 ```
