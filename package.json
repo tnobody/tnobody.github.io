@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "preeleventy": "cpy . ../../../_site/reveal-css --cwd=node_modules/reveal.js/dist/ --parents",
-    "eleventy": "@11ty/eleventy --input=content/",
+    "eleventy": "eleventy --input=content/",
     "dev": "@11ty/eleventy --input=content --serve --watch",
     "debug": "@11ty/eleventy --input=content --to=json ",
     "test": "mdspell -r content/**/*.md --en-us",
