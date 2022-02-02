@@ -1,0 +1,138 @@
+<details class="mb-4 p-4 bg-white bg-opacity-5 shadow">
+  <summary>How to use this form</summary>
+  <p>Image you are in the following situation:</p>
+  <figure>
+    <img src="form-help.png" alt="Screenshot of wordle" />
+    <figcaption>Screenshot of wordle</figcaption>
+  </figure>
+  <p>
+    For this situation you would enter "<i>resca</i>" into the textfield
+    <i>Ignore letters</i>
+  </p>
+  <p>
+    In <i>required letters</i> you can enter <i>"t"</i> and <i>"s"</i> into the
+    forth and fifth textfield
+  </p>
+  <p>
+    And an <i>"o"</i> into the second input field for <i>correct letters</i>
+  </p>
+  <p>Press <i>Get Suggestions</i> and see what happens.</p>
+  <button class="btn-close bg-green-500 font-bold p-2 px-4 text-black">
+    Got it
+  </button>
+</details>
+<form
+  id="hacking-wordle-form"
+  method="get"
+  action="form"
+  class="flex flex-col gap-4"
+>
+  <dl class="flex flex-col md:flex-row">
+    <dt class="md:w-1/4 w-full">
+      <label for="ignore_chars">Ignore letters</label>
+    </dt>
+    <dd class="flex-1">
+      <input type="text" class="w-full" name="ignore_chars" id="ignore_chars" />
+    </dd>
+  </dl>
+  <dl class="flex flex-col md:flex-row">
+    <dt class="md:w-1/4 w-full">Required letters</dt>
+    <dd class="flex flex-1 gap-4 skipping-inputs">
+      <input
+        name="required_chars"
+        class="text-center"
+        type="text"
+        maxlength="1"
+      />
+      <input
+        name="required_chars"
+        class="text-center"
+        type="text"
+        maxlength="1"
+      />
+      <input
+        name="required_chars"
+        class="text-center"
+        type="text"
+        maxlength="1"
+      />
+      <input
+        name="required_chars"
+        class="text-center"
+        type="text"
+        maxlength="1"
+      />
+      <input
+        name="required_chars"
+        class="text-center"
+        type="text"
+        maxlength="1"
+      />
+    </dd>
+  </dl>
+  <dl class="flex flex-col md:flex-row">
+    <dt class="md:w-1/4 w-full">Correct letters</dt>
+    <dd class="flex flex-1 gap-4 skipping-inputs">
+      <input name="fixed_chars" class="text-center" type="text" maxlength="1" />
+      <input name="fixed_chars" class="text-center" type="text" maxlength="1" />
+      <input name="fixed_chars" class="text-center" type="text" maxlength="1" />
+      <input name="fixed_chars" class="text-center" type="text" maxlength="1" />
+      <input name="fixed_chars" class="text-center" type="text" maxlength="1" />
+    </dd>
+  </dl>
+  <div class="flex justify-end">
+    <button type="submit" class="bg-green-500 font-bold p-2 px-4 text-black">
+      Get Suggestions
+    </button>
+  </div>
+  <div id="result"></div>
+</form>
+<script>
+  const blankWhenEmpty = (s) => (s.length === 0 ? " " : s);
+  console.log(document.querySelector("details .btn-close"));
+  document
+    .querySelector("details .btn-close")
+    .addEventListener("click", (e) => {
+      const detailsParent = e.target?.closest("details");
+      console.log(detailsParent);
+      if (detailsParent) {
+        detailsParent.removeAttribute("open");
+      }
+    });
+  /**
+   * @param {HTMLFormElement} form
+   **/
+  function registerForm(form) {
+    const result = document.getElementById("result");
+    Array.from(form.querySelectorAll(".skipping-inputs input")).map((el) => {
+      el.addEventListener("keyup", (e) => {
+        if (/^[a-z]$/.test(e.key)) {
+          e.target?.nextElementSibling?.focus();
+        }
+      });
+      el.addEventListener("focus", (e) => {
+        e.target?.setSelectionRange(0, e.target?.value.length);
+      });
+    });
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      const params = new URLSearchParams({
+        ignore_chars: formData.get("ignore_chars"),
+        required_chars: formData
+          .getAll("required_chars")
+          .map(blankWhenEmpty)
+          .join(""),
+        fixed_chars: formData
+          .getAll("fixed_chars")
+          .map(blankWhenEmpty)
+          .join(""),
+      });
+      const responseText = await fetch(`/api/hacking-wordle?${params}`).then(
+        (r) => r.text()
+      );
+      result.innerHTML = responseText;
+    });
+  }
+  registerForm(document.querySelector("#hacking-wordle-form"));
+</script>

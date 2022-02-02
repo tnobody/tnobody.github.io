@@ -5,3 +5,4 @@ node_modules/
 .next/
 venv/
 .ipynb_checkpoints
+.vercel

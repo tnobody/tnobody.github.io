@@ -1,0 +1,11 @@
+{
+  "vueToJs": {
+    "./content/blog/hacking-wordle/_includes/form.vue": "content/blog/hacking-wordle/_includes/form.js"
+  },
+  "relationships": [
+    {
+      "from": "content/blog/hacking-wordle/_includes/form.js",
+      "to": "content/blog/hacking-wordle/_includes/form.vue_rollup-plugin-vue_script.js"
+    }
+  ]
+}

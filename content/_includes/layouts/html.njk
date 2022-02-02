@@ -19,6 +19,7 @@
     {% for style in styles %}
       <link rel="stylesheet" href="{{ style }}"/>
     {% endfor %}
+    <script defer type="module" src="/app.js"></script>
   </head>
   {{ content | safe }}
   {% for script in scripts %}
