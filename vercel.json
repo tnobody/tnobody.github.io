@@ -1,8 +1,8 @@
 {
   "functions": {
-    "api/**": {
-      "includeFiles": "./api/**",
-      "excludeFiles": ".yarn/**"
+    "api/hacking-wordle/**": {
+      "includeFiles": "./api/hacking-wordle/**",
+      "excludeFiles": "{.yarn/**,.vscode/**,./_site/**,.vercel/**,node_modules/**,.git/**}"
     }
   }
 }
