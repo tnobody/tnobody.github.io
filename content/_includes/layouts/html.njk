@@ -20,9 +20,10 @@
       <link rel="stylesheet" href="{{ style }}"/>
     {% endfor %}
     <script defer type="module" src="/app.js"></script>
+    <script src="//unpkg.com/alpinejs" defer></script>
   </head>
   {{ content | safe }}
   {% for script in scripts %}
-    <script src="{{script}}"></script>
+    <script src="{{script}}" type="module"></script>
   {% endfor %}
 </html>

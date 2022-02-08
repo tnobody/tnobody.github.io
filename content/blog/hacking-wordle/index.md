@@ -194,16 +194,16 @@ of the "best words" to start:
 | 10961 | sales |
 | 10910 | sones |
 | 10794 | soles |
-
+ 
 Of course there are plenty of improvements to the whole model.
 Right now it doesn't consider the relation between single letters
 (does words that starts with a `s` are likely to end with `s` or
 more likely with another letter?).
-
+ 
 ## Filter the word list
-
+ 
 Finally we need to filter the list of best words since we can't expect
 _sores_ to be the solution all the time. So we need to apply the hints we
 got from the game as filters to our list.
 
-{% renderFile "./content/blog/hacking-wordle/form.html" %}
+<div id="suggestion-form"></form>

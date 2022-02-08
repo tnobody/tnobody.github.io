@@ -1,7 +1,8 @@
 {
   "functions": {
     "api/**": {
-      "includeFiles": "./api/**"
+      "includeFiles": "./api/**",
+      "excludeFiles": ".yarn/**"
     }
   }
 }

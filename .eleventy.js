@@ -9,7 +9,6 @@ const esbuild = require("esbuild");
 const UpgradeHelper = require("@11ty/eleventy-upgrade-help");
 const eleventyVue = require("@11ty/eleventy-plugin-vue");
 
-
 const getOrderValue = (page) => {
   const matches = (page.fileSlug || "").match(/^([0-9]*)_.*/);
   if (matches && matches.length === 2) {
@@ -25,7 +24,7 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addPlugin(UpgradeHelper);
   eleventyConfig.addPlugin(eleventyVue);
   eleventyConfig.addPlugin(EleventyRenderPlugin);
-  
+
   // Content configuration
   eleventyConfig.addPassthroughCopy("static");
 
@@ -51,7 +50,7 @@ module.exports = function (eleventyConfig) {
     return markdown.render(value);
   });
 
-  eleventyConfig.setTemplateFormats(["png", "md", "njk", "html"]);
+  eleventyConfig.setTemplateFormats(["js", "png", "md", "njk", "html"]);
 
   eleventyConfig.addCollection("posts", (collectionApi) =>
     collectionApi.getFilteredByGlob("content/blog/**/*.md")
@@ -69,6 +68,7 @@ module.exports = function (eleventyConfig) {
 
   eleventyConfig.addWatchTarget("styles/**/*.css");
   eleventyConfig.addWatchTarget("js/**/*");
+  eleventyConfig.addWatchTarget("**/*.js");
   eleventyConfig.addNunjucksAsyncFilter("esbuild", (jsFile, done) => {
     esbuild
       .build({

@@ -2,6 +2,7 @@ from http.server import BaseHTTPRequestHandler
 from collections import Counter
 from os import listdir, path
 import json
+import re
 from urllib.parse import parse_qs, urlparse
 
 
@@ -22,6 +23,10 @@ matrix_t = [list(word) for word in zip(*matrix)]
 char_counts = [Counter(word) for word in matrix_t]
 
 blank = ' '
+re_is_letter = re.compile("^[a-zA-Z]$")
+
+def is_letter(char):
+    return re_is_letter.match(char) is not None;
 
 
 def word_is_allowed(word, ignore_chars=[], fixed_chars="     ", required_chars="     "):
@@ -43,7 +48,7 @@ def get_word_score(word):
     ])
 
 
-def get_best_words(ignore_chars=[], required_chars="     ", fixed_chars="     "):
+def get_best_words(matrix, ignore_chars=[], required_chars="     ", fixed_chars="     "):
     print(ignore_chars, required_chars, fixed_chars)
     return sorted([
         (get_word_score(word), "".join(word))
@@ -52,20 +57,8 @@ def get_best_words(ignore_chars=[], required_chars="     ", fixed_chars="     ")
     ], key=lambda r: r[0], reverse=True)
 
 
-def possible_words_table(best_words):
-
-    return f"""
-    <table>
-        <tr>
-            <th>Word</th>
-            <th>Score</th>
-        </tr>
-        {"".join([
-            f"<tr><td>{word}</td><td>{score}</td></tr>"
-            for (score, word) in best_words
-        ])}
-    </table>
-    """
+def get_inputs(line):
+    return [(i[0], i[2]) for i in line.split(',')]
 
 
 class handler(BaseHTTPRequestHandler):
@@ -75,12 +68,36 @@ class handler(BaseHTTPRequestHandler):
         self.end_headers()
         url = urlparse(self.path)
         params = parse_qs(url.query)
-        best_words = get_best_words(
-            ignore_chars=list(params.get('ignore_chars', [''])[0]),
-            required_chars=params.get('required_chars', ['     '])[0],
-            fixed_chars=params.get('fixed_chars', ['     '])[0]
-        )
+
+        state_param = params.get('state', [''])[0]
+
+        best_words = [(get_word_score(word), word) for word in matrix]
+        for line in state_param.split(";"):
+            inputs = get_inputs(line)
+            ignore_chars = [
+                letter.lower() for (letter, state) in inputs
+                if state == 'I' and is_letter(letter)
+            ]
+            required_chars = ''.join([
+                letter.lower() if state == 'R' and is_letter(letter) else ' '
+                for (letter, state) in inputs
+            ])
+            fixed_chars = ''.join([
+                letter.lower() if state == 'C' and is_letter(letter) else ' '
+                for (letter, state) in inputs
+            ])
+
+            d = {'ignore_chars': ignore_chars,
+                 'required_chars': required_chars, 'fixed_chars': fixed_chars}
+            print( 
+                f"Checking {d}")
+            best_words = get_best_words(
+                [word for (score, word) in best_words],
+                ignore_chars=ignore_chars,
+                required_chars=required_chars,
+                fixed_chars=fixed_chars
+            )
 
         response_json = json.dumps(best_words[:10])
-        self.wfile.write(possible_words_table(best_words[:10]).encode("utf-8"))
+        self.wfile.write(response_json.encode("utf-8"))
         return
