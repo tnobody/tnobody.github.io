@@ -1,4 +1,3 @@
-const fetch = require("node-fetch");
 
 module.exports = async function () {
   console.log("Fetching new github issues count…");
