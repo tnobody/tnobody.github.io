@@ -1,11 +1,22 @@
 ---
 title: Hacking Wordle
 scripts:
-    - form.js
+  - form.js
+tags: []
+draft: false
 ---
 
 # Hacking Wordle
 
+<details>
+<summary><span>tl:dr</span></summary>
+<p>
+  <a href="tool">I just want a bit help</a>
+</p>
+<p>
+  <a href="#cheat">I really want to cheat</a>
+</p>
+</details>
 Do you recently see something like this on twitter:
 
 ```txt
@@ -79,7 +90,7 @@ you look closely two points are strinking:
 - The larger list seems to be ordered (from a to z) while the second seems to
   be in random order
 
-To make it short: The second list is the solution list and the wordle number
+<div id="cheat"></div>To make it short: The second list is the solution list and the wordle number
 (which you can see when you share your result) is the index in this array. So
 from my example from the beginning it would be:
 
@@ -175,14 +186,14 @@ With this counts we are able to create a very simple scoring model where we sum
 up the count of each letter at its position.
 Lets take the word `whack` (solution of wordle 221) as an example:
 
-| Pos | Letter | Score |
-| --- | ------ | ----: |
-| 0   | w      |   413 |
-| 1   | h      |   546 |
-| 2   | a      |  1236 |
-| 3   | c      |   411 |
-| 4   | k      |   259 |
-|     | Sum    |  2865 |
+| Pos | Letter  |  Score |
+| --- | ------- | -----: |
+| 0   | w       |    413 |
+| 1   | h       |    546 |
+| 2   | a       |   1236 |
+| 3   | c       |    411 |
+| 4   | k       |    259 |
+|     | **Sum** | _2865_ |
 
 So whack would have a score of 2865. With this model we can create a list
 of the "best words" to start:
@@ -194,16 +205,130 @@ of the "best words" to start:
 | 10961 | sales |
 | 10910 | sones |
 | 10794 | soles |
- 
+
 Of course there are plenty of improvements to the whole model.
 Right now it doesn't consider the relation between single letters
 (does words that starts with a `s` are likely to end with `s` or
 more likely with another letter?).
- 
+
 ## Filter the word list
- 
-Finally we need to filter the list of best words since we can't expect
-_sores_ to be the solution all the time. So we need to apply the hints we
-got from the game as filters to our list.
+
+Now we have a list of words and can give each word a value, we should filter out
+the words that can definitely not be the solution based on the hints from wordle.
+
+<figure>
+    <img src="example-hints-wordle.png" alt="Screenshot of a guess in the Wordle
+    game with the hints from the game" />
+    <figcaption>Screenshot of a guess in the Wordle
+    game with the hints from the game</figcaption>
+</figure>
+
+In the example above wordle tells us that we are searching for a word that:
+
+- doesn't contain _S_ and _E_ (`ignore_chars`)
+- definitely starts with _H_ (`fixed_chars`)
+- contains an _O_ and an _U_ but not at position two respectively three (`required_chars`)
+
+Lets start with the easy part and filter by the letters that are not in the word:
+
+```python
+# assume word to be set by an iteration or function argument
+ignore_chars = "se"
+no_ignored_chars = all([c not in ignore_chars for c in word.lower()])
+```
+
+For the other parts we define an input of a five character string where the
+position of the chars is important.
+
+```python
+blank = " "
+fixed_chars = "H     "
+matches_fixed_chars = all([ # check that all values are True
+  c == word[i]  # check if the char is the same as in word at this position
+  for (i, c) in enumerate(fixed_chars) # get each char and its position
+  if c is not blank # ignore blanks
+])
+```
+
+The last constraint is a "little" bit trickier since it implies two requirements:
+A character must be in the word, but not at the certain position.
+
+```python
+required_chars = " OU  "
+
+required_but_not_at = all([
+  c is not word[i] # evaluate that the char is not at that position in the word
+  for (i, c) in enumerate(required_chars) # get each char and its position
+  if c is not blank # ignore blanks
+])
+contains_requires = all([
+  c in word # evaluate that the char is in the word
+  for c in required_chars # just iterate over each char of the required chars
+  if c is not blank # you got the point ;)
+])
+```
+
+So we can finally compile all these constraints into a single function:
+
+```python
+
+def word_is_allowed(word, ignore_chars=[], fixed_chars="     ", required_chars="     "):
+    ignore_chars = set(ignore_chars) - set(fixed_chars + required_chars)
+    no_ignored_chars = all([c not in ignore_chars for c in word])
+
+    matches_fixed_chars = all(
+        [c == word[i] for (i, c) in enumerate(fixed_chars) if c is not blank])
+
+    required_but_not_at = all([c is not word[i] for (
+        i, c) in enumerate(required_chars) if c is not blank])
+
+    contains_requires = all(
+        [c in word for c in required_chars if c is not blank])
+
+    return no_ignored_chars and matches_fixed_chars and required_but_not_at and contains_requires
+```
+
+Finally you can create a list that represents your guesses:
+
+```python
+guesses = [
+  ("se", "H    ", " OU  "),
+  ("eady", "     ", "R    "), # Input was ready
+]
+
+filtered_words = words
+
+for (ignore_chars, fixed_chars, required_chars) in guesses:
+  words = [
+    word for word in words
+    if word_is_allowed(ignore_chars, fixed_chars, required_chars)
+  ]
+```
+
+And finally we can apply the score and sort the results:
+
+```python
+result = sorted([
+  (get_word_score(word), word)
+  for word in words
+], key=lambda r: r[0], reverse=True)
+```
+
+## The Tool
+
+Finally i created a little user interface to make this code accessible. So have 
+fun. 
 
 <div id="suggestion-form"></form>
+
+## Summary
+
+If you have tested the tool for a while you might noticed that it is not a
+silver bullet to accurately find the correct word. One technical aspects might
+be that the scoring model itself is very simplistic. It can be refined by
+running n-gram analysis the see which is the most likely neighbor of a certain
+letter at a certain position. Another aspect is a bit more human: The [legend says](https://www.nytimes.com/2022/01/03/technology/wordle-word-game-creator.html)
+that the creator of wordle created the game for his partner as a one person
+project. So maybe at least one human eye might checked the list of correct words
+to be "common" and "guessable" enough which would set back a lot of technical 
+considerations.

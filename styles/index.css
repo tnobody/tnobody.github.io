@@ -24,8 +24,25 @@ a {
   @apply text-green-400;
 }
 
+.prose h1 a {
+  @apply no-underline;
+}
+
 .prose a {
   @apply underline;
+}
+
+.prose {
+  figcaption {
+    text-align: center;
+  }
+  details {
+    @apply bg-gray-800 p-4 mb-4;
+
+    summary span {
+      @apply pl-2 font-bold text-green-400;
+    }
+  }
 }
 
 body > header,

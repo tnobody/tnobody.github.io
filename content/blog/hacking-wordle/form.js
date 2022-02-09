@@ -19,12 +19,14 @@ function SuggestionForm() {
           line.map(({ letter, state }) => `${letter}:${state}`).join(",")
         )
         .join(";");
-      const sugg = await fetch(`/api/hacking-wordle?state=${paramState}`).then(
-        (r) => r.json()
-      );
-      setSuggestions(sugg);
-      setIsLoading(false);
-      console.log(sugg);
+      try {
+        const sugg = await fetch(
+          `/api/hacking-wordle?state=${paramState}`
+        ).then((r) => r.json());
+        setSuggestions(sugg);
+      } finally {
+        setIsLoading(false);
+      }
     },
     [wordleLines]
   );
@@ -36,7 +38,11 @@ function SuggestionForm() {
         onChange=${setWordleLines}
       />
       <hr />
-      <button type="submit" class="bg-green-900 px-4 py-2 ">
+      <button
+        disabled=${isLoading}
+        type="submit"
+        class="bg-green-900 px-4 py-2 "
+      >
         Get suggestions
       </button>
     </form>

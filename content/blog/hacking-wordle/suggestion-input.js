@@ -7,9 +7,6 @@ export const SuggestionInput = ({ wordleLines, onChange }) => {
   const handleValueChange = useCallback(
     (v, guessIndex, pos) => {
       const line = wordleLines[guessIndex];
-      if (!line) {
-        console.log("Not at ", guessIndex, wordleLines);
-      }
       onChange(replaceAt(wordleLines, guessIndex, replaceAt(line, pos, v)));
     },
     [wordleLines]
@@ -33,7 +30,7 @@ export const SuggestionInput = ({ wordleLines, onChange }) => {
     <ul class="list-none flex flex-col gap-8">
       ${wordleLines.map(
         (line, guessIndex) => html`
-          <li >
+          <li>
             <ul class="list-none flex gap-4 items-center">
               ${line.map(
                 (l, pos) =>
