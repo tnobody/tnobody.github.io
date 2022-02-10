@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    {% set page_title  = 'Nobody codes perfect - ' + title if title else  'Nobody codes perfect' %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!--  Essential META Tags -->
-    <meta property="og:title" content="{{title}}" />
-    <meta property="twitter:title" content="{{title}}" />
+    <meta property="og:title" content="{{page_title}}" />
+    <meta property="twitter:title" content="{{page_title}}" />
     <meta property="og:type" content="article" />
-    <meta property="og:image" content="static/thumbnail.png" />
+    <meta property="og:image" content="/static/thumbnail.png" />
     <meta property="og:url" content="{{page.url}}" />
     <meta name="twitter:card" content="summary" />
 
@@ -20,7 +21,7 @@
 
     <!--  Non-Essential, But Required for Analytics -->    
     <meta name="twitter:site" content="@derKeiner">
-    <title>{{title}}</title>
+    <title>{{page_title}}</title>
     {% if criticalCSS %}
       <!-- capture the CSS content as a Nunjucks variable -->
       {% set css %}
