@@ -316,8 +316,8 @@ result = sorted([
 
 ## The Tool
 
-Finally i created a little user interface to make this code accessible. So have 
-fun. 
+Finally i created a little user interface to make this code accessible. So have
+fun.
 
 <div id="suggestion-form"></form>
 
@@ -330,5 +330,7 @@ running n-gram analysis the see which is the most likely neighbor of a certain
 letter at a certain position. Another aspect is a bit more human: The [legend says](https://www.nytimes.com/2022/01/03/technology/wordle-word-game-creator.html)
 that the creator of wordle created the game for his partner as a one person
 project. So maybe at least one human eye might checked the list of correct words
-to be "common" and "guessable" enough which would set back a lot of technical 
+to be "common" and "guessable" enough which would set back a lot of technical
 considerations.
+
+💬 Any thoughts (or bugs in the tool)? Feel free to share them in the [Github discussion](https://github.com/tnobody/tnobody.github.io/discussions/24)
